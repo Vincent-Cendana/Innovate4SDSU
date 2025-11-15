@@ -3,6 +3,7 @@ import {useParams} from 'react-router-dom'
 import NavBar from '../components/NavBar'
 import StarRating from '../components/StarRating'
 import examples from '../data/examples'
+import AddRatingButton from "../components/AddRatingButton"
 
 const ExampleDetail = () => {
   const {id} = useParams()
@@ -34,6 +35,7 @@ const ExampleDetail = () => {
   return (
     <div style={{maxWidth:800,margin:'0 auto',padding:12}}>
       <NavBar />
+      <AddRatingButton/>
       <h2>{ex.name}</h2>
       <img src={ex.image} alt={ex.name} style={{width:'100%',height:300,objectFit:'cover',borderRadius:8}}/>
       <p style={{marginTop:12}}>{ex.description}</p>
