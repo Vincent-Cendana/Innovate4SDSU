@@ -4,19 +4,31 @@ import NavBar from '../components/NavBar'
 import StarRating from '../components/StarRating'
 import examples from '../data/examples'
 import AddRatingButton from "../components/AddRatingButton"
+import {supabase} from '../data/supabase'
 
 const ExampleDetail = () => {
-  const {id} = useParams()
-  const ex = examples.find(e => e.id === id)
+  const {spot_name} = useParams()
+  const [spot, setSpot] = useState(null);
+
+  useEffect(() => {
+    const fetchSpot = async () => {
+      const {data, error} = await supabase
+        .from("spots")
+        .select("*")
+        .eq("name", spot_name)
+        .single();
+      
+      if(error) console.error("Error fetching spot:", error.message);
+      else setSpot(data);
+    }
+
+    fetchSpot();
+  }, []);
+
   const [comments, setComments] = useState([])
   const [newComment, setNewComment] = useState('')
 
-  useEffect(()=>{
-    const saved = window.localStorage.getItem(`comments_${id}`)
-    if (saved) setComments(JSON.parse(saved))
-  },[id])
-
-  if (!ex) return (
+  if (!spot) return (
     <div style={{padding:12}}>
       <NavBar />
       <div>Example not found.</div>
@@ -36,18 +48,18 @@ const ExampleDetail = () => {
     <div style={{maxWidth:800,margin:'0 auto',padding:12}}>
       <NavBar />
       <AddRatingButton/>
-      <h2>{ex.name}</h2>
-      <img src={ex.image} alt={ex.name} style={{width:'100%',height:300,objectFit:'cover',borderRadius:8}}/>
-      <p style={{marginTop:12}}>{ex.description}</p>
+      <h2>{spot.name}</h2>
+      <img src={spot.image} alt={spot.name} style={{width:'100%',height:300,objectFit:'cover',borderRadius:8}}/>
+      <p style={{marginTop:12}}>{spot.description}</p>
 
       <div style={{display:'flex',gap:24,marginTop:8}}>
         <div>
           <div style={{fontSize:13,color:'#666'}}>Overall rating</div>
-          <StarRating value={ex.overallRating} />
+          <StarRating value={spot.overall_rating} />
         </div>
         <div>
           <div style={{fontSize:13,color:'#666'}}>Busy rating</div>
-          <StarRating value={ex.busyRating} />
+          <StarRating value={spot.busy_rating} />
         </div>
       </div>
 
