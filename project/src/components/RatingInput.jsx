@@ -1,17 +1,23 @@
-import React from 'react'
-import {useEffect, useState} from "react"
+import {useRef} from "react"
 
-const RatingInput = () => {
-    const [overallRating, setOverallRating] = useState(3);
-    const [busyRating, setBusyRating] = useState(5);
-    const [comment, setComment] = useState();
+const RatingInput = ({setInputVisible}) => {
+    const overallRatingRef = useRef(null);
+    const busyRatingRef = useRef(null);
+    const commentRef = useRef(null);
+
+    const onSubmitButtonClick = () => {
+        setInputVisible(false);
+    }
 
     return (
     <div>
-        RatingInput: {overallRating}, {busyRating}
-        <input type="number" min="1" max="5" value={overallRating} onChange={(e) => setOverallRating(Math.min(5, Math.max(1, parseInt(e.target.value) || 1)))}></input>
-        <input onChange={(e) => setComment(e.target.value)}></input>
-        <button>Submit</button>
+        <input type="number" min="1" max="5" ref={overallRatingRef}></input>
+        
+        <input type="number" min="1" max="5" ref={busyRatingRef}></input>
+
+        <input ref={commentRef}></input>
+        
+        <button onClick={onSubmitButtonClick}>Submit</button>
     </div>
     )
 }
