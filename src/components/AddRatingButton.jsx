@@ -1,6 +1,5 @@
 import {useState} from "react"
 import RatingInput from "./RatingInput"
-import { supabase } from "../data/supabase"
 
 const AddRatingButton = () => {
   const [inputVisible, setInputVisible] = useState();

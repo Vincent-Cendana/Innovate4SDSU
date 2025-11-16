@@ -1,5 +1,5 @@
 import {useRef} from "react"
-import { supabase } from "../data/supabase"
+import { getSupabase } from "../data/supabase"
 
 const RatingInput = ({setInputVisible}) => {
     const overallRatingRef = useRef(null);
@@ -7,10 +7,23 @@ const RatingInput = ({setInputVisible}) => {
     const commentRef = useRef(null);
 
     const onSubmitButtonClick = async () => {
+        const supabase = getSupabase();
         const {data, error} = await supabase
-            .from("UserRatings")
-            .select("user_key")
-            .eq("user_key", process.env.DEV_USER_KEY);
+            .from("user_ratings")
+            .select("*")
+            .limit(1);
+        /*if(!data) {
+            const {data, error} = await supabase
+                .from("user_ratings")
+                .insert([{
+                    overall_rating: parseInt(overallRatingRef.current.value),
+                    busy_rating: parseInt(busyRatingRef.current.value),
+                    comment: commentRef.current.value
+                }]);
+            alert(error.message);
+        }*/
+        if(data) alert(JSON.stringify(data));
+        else alert(error.message);
         setInputVisible(false);
     }
 
