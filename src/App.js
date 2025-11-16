@@ -8,8 +8,8 @@ function App() {
   return (
     <main className="App">
       <Routes>
-        <Route path="/" element={<Home/>}/>
-        <Route path="/login" element={<Login/>}/>
+        <Route path="/home" element={<Home/>}/>
+        <Route path="/" element={<Login/>}/>
         <Route path="/spot/:spot_name" element={<ExampleDetail/>} />
         <Route path="/search" element={<SearchResults/>} />
       </Routes>

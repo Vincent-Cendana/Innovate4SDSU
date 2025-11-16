@@ -6,7 +6,7 @@ const NavBar = ({showHome=true}) => {
 	return (
 		<div style={{display:'flex',alignItems:'center',gap:12,padding:12,borderBottom:'1px solid #eee'}}>
 			<button onClick={() => nav(-1)} style={{padding:'6px 10px'}}>Back</button>
-			{showHome && <button onClick={() => nav('/')} style={{padding:'6px 10px'}}>Home</button>}
+			{showHome && <button onClick={() => nav('/home')} style={{padding:'6px 10px'}}>Home</button>}
 			<div style={{flex:1}} />
 		</div>
 	)
