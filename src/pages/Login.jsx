@@ -1,22 +1,48 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import {useNavigate} from 'react-router-dom'
 import NavBar from '../components/NavBar'
 import {supabase} from '../data/supabase'
+import {Link} from 'react-router-dom'
 
 const Login = () => {
   const [name,setName] = useState('')
   const nav = useNavigate()
 
-  const submit = async (e) => {
-    const { data, error } = await supabase.auth.signUp({
-      email: 'example@email.com',
-      password: 'password123',
-    })
-    e.preventDefault()
-    if (name.trim()) {
-      window.localStorage.setItem('username', name.trim())
+  /*useEffect(() => {
+    const checkUser = async () => {
+      const {data} = await supabase.auth.getUser()
+      if(data.user != null) {
+        nav('/home#/home');
+      }
     }
-    nav('/home')
+    checkUser();
+  }, []);*/
+
+  const submit = async (e) => {
+    e.preventDefault()
+    const { data, error } = await supabase.auth.signInWithOtp({
+      email: name + '@sdsu.edu',
+      options: {
+        data: {
+          username: name
+        }
+      }
+    })
+    console.log(`login result for ${name + '@sdsu.edu'}: data:${data}, error: ${error}}`);
+    nav('/home#/home')
+  }
+
+  const continueAsGuest = async (e) => {
+    e.preventDefault();
+    const { data, error } = await supabase.auth.signInAnonymously({
+      options: {
+        data: {
+          username: "Guest User"
+        }
+      }
+    });
+    console.log(await supabase.auth.getUser());
+    nav('/home#/home');
   }
 
   return (
@@ -34,6 +60,11 @@ const Login = () => {
         </div>
         <button type="submit" style={{padding:12,fontSize:18,fontWeight:600,backgroundColor:'#333',color:'#fff',border:'none',borderRadius:6,cursor:'pointer'}}>Continue</button>
       </form>
+      <button
+        onClick={continueAsGuest}
+        style={{display:'inline-block',textAlign:'center',padding:12,fontSize:18,fontWeight:600,backgroundColor:'#eee',color:'#333',border:'none',borderRadius:6,cursor:'pointer',marginTop:8,textDecoration:'none'}}>
+        Continue as Guest
+      </button>
     </div>
   )
 }

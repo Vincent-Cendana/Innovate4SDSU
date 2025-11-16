@@ -1,5 +1,5 @@
 import {useRef} from "react"
-import { getSupabase } from "../data/supabase"
+import { supabase } from "../data/supabase"
 
 const RatingInput = ({setInputVisible}) => {
     const overallRatingRef = useRef(null);
@@ -7,35 +7,29 @@ const RatingInput = ({setInputVisible}) => {
     const commentRef = useRef(null);
 
     const onSubmitButtonClick = async () => {
-        const supabase = getSupabase();
         const {data, error} = await supabase
-            .from("user_ratings")
-            .select("*")
-            .limit(1);
-        /*if(!data) {
-            const {data, error} = await supabase
-                .from("user_ratings")
-                .insert([{
-                    overall_rating: parseInt(overallRatingRef.current.value),
-                    busy_rating: parseInt(busyRatingRef.current.value),
-                    comment: commentRef.current.value
-                }]);
-            alert(error.message);
-        }*/
-        if(data) alert(JSON.stringify(data));
-        else alert(error.message);
+            .from("spots")
+            .insert({
+                overall_rating: parseInt(overallRatingRef.current.value, 10),
+                busy_rating: parseInt(busyRatingRef.current.value, 10),
+                comment: commentRef.current.value
+            })
         setInputVisible(false);
     }
 
     return (
-    <div>
-        <input type="number" min="1" max="5" ref={overallRatingRef}></input>
-        
-        <input type="number" min="1" max="5" ref={busyRatingRef}></input>
+    <div className="card">
+        <div style={{display:'flex',gap:8,marginBottom:8}}>
+            <input className="input" type="number" min="1" max="5" ref={overallRatingRef} placeholder="Overall (1-5)" />
+            <input className="input" type="number" min="1" max="5" ref={busyRatingRef} placeholder="Busy (1-5)" />
+        </div>
 
-        <input ref={commentRef}></input>
+        <input className="input" ref={commentRef} placeholder="Comment (optional)" />
         
-        <button onClick={onSubmitButtonClick}>Submit</button>
+        <div style={{marginTop:8,display:'flex',gap:8}}>
+          <button className="btn btn-primary" onClick={onSubmitButtonClick}>Submit</button>
+          <button className="btn btn-ghost" onClick={() => setInputVisible(false)}>Cancel</button>
+        </div>
     </div>
     )
 }

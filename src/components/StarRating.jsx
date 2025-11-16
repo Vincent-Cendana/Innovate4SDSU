@@ -3,9 +3,10 @@ import React from 'react'
 const StarRating = ({value=0, max=5}) => {
   const stars = []
   for (let i=1;i<=max;i++) {
+    const filled = i <= value
     stars.push(
-      <span key={i} style={{color: i<=value ? '#f5b301' : '#ddd', fontSize:20, marginRight:4}}> 
-        {i<=value ? '★' : '☆'}
+      <span key={i} className="star" style={{color: filled ? '#f5b301' : '#ddd'}}>
+        {filled ? '★' : '☆'}
       </span>
     )
   }

@@ -1,0 +1,117 @@
+/* SDSU-inspired colorway and global styles */
+:root{
+  --main-red: #D41736; /* bright red */
+  --main-dark: #A6192E; /* dark red */
+  --black: #000000;
+  --muted: #6b7280;
+  --card-bg: #ffffff;
+  --app-bg: #fff7f8; /* subtle tinted background */
+  --border: #f3dede;
+  --radius: 8px;
+}
+
+html,body,#root{
+  height:100%;
+}
+body{
+  margin:0;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: var(--app-bg);
+  color: var(--black);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+/* Container utility */
+.container{
+  max-width:980px;
+  margin:0 auto;
+  padding:16px;
+}
+
+/* Buttons */
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:10px 14px;
+  border-radius:6px;
+  border:1px solid transparent;
+  cursor:pointer;
+  font-weight:600;
+  font-size:16px;
+}
+
+.btn-primary{
+  background: linear-gradient(180deg, var(--main-red), var(--main-dark));
+  color: white;
+}
+
+.btn-ghost{
+  background: transparent;
+  color: var(--main-red);
+  border-color: transparent;
+}
+
+/* Cards */
+.card{
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  box-shadow: 0 1px 4px rgba(2,6,23,0.04);
+  padding:12px;
+}
+
+/* Inputs */
+.input{
+  padding:12px 14px;
+  border:1px solid var(--border);
+  border-radius:6px;
+  font-size:16px;
+  outline:none;
+  background:white;
+}
+
+.input:focus{
+  box-shadow: 0 0 0 6px rgba(212,23,54,0.06);
+  border-color: var(--main-red);
+}
+
+/* Header / Nav */
+.app-header{
+  background: linear-gradient(90deg, var(--main-red), var(--main-dark));
+  color: white;
+  padding:12px 16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.app-title{
+  font-size:20px;
+  font-weight:700;
+}
+
+/* Star rating tweaks */
+.star {
+  font-size:20px;
+  margin-right:4px;
+}
+
+/* Ensure header buttons are visible on dark background */
+.app-header .btn-ghost{
+  color: #fff;
+  border-color: rgba(255,255,255,0.08);
+}
+.app-header .btn{
+  background: transparent;
+  color: #fff;
+  border-color: rgba(255,255,255,0.06);
+}
+
+/* Responsive tweaks */
+@media (max-width:600px){
+  .container{padding:12px}
+  .app-title{font-size:18px}
+}

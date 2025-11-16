@@ -2,7 +2,7 @@ import {useState} from "react"
 import RatingInput from "./RatingInput"
 
 const AddRatingButton = () => {
-  const [inputVisible, setInputVisible] = useState();
+  const [inputVisible, setInputVisible] = useState(false);
 
   const onClick = () => {
     setInputVisible(prev => !prev);
@@ -10,8 +10,8 @@ const AddRatingButton = () => {
 
   return (
     <div>
-      <button onClick={onClick}>Add Rating</button>
-      {inputVisible && <RatingInput setInputVisible={setInputVisible}/>}
+      <button className="btn btn-primary" onClick={onClick}>{inputVisible ? 'Close' : 'Add Rating'}</button>
+      {inputVisible && <div style={{marginTop:12}}><RatingInput setInputVisible={setInputVisible}/></div>}
     </div>
   )
 }

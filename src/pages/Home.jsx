@@ -7,6 +7,7 @@ const Home = () => {
   const [q, setQ] = useState('')
   const nav = useNavigate()
 
+  const [username, setUsername] = useState('Loading User...');
   const [spots, setSpots] = useState([]);
 
   useEffect(() => {
@@ -19,7 +20,13 @@ const Home = () => {
       else setSpots(data);
     }
 
+    const fetchUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      setUsername(user.user_metadata.username);
+    }
+
     fetchExamples();
+    fetchUser();
   }, []);
 
   const submit = (e) => {
@@ -30,7 +37,7 @@ const Home = () => {
   return (
     <div style={{maxWidth:800,margin:'0 auto',padding:12}}>
       <NavBar />
-      <h2>Welcome{typeof window !== 'undefined' && window.localStorage.getItem('username') ? `, ${window.localStorage.getItem('username')}` : ''}</h2>
+      <h2>Welcome {username}</h2>
       <form onSubmit={submit} style={{marginBottom:20}}>
         <input
           value={q}
