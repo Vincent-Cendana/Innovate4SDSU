@@ -74,7 +74,7 @@ const ExampleDetail = () => {
   return (
     <div style={{maxWidth:800,margin:'0 auto',padding:12}}>
       <NavBar />
-      <AddRatingButton/>
+      <AddRatingButton spot={spot}/>
       <h2>{spot.name}</h2>
       <img src={spot.image} alt={spot.name} style={{width:'100%',height:300,objectFit:'cover',borderRadius:8}}/>
       <p style={{marginTop:12}}>{spot.description}</p>
