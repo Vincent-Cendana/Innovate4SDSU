@@ -4,11 +4,12 @@ import NavBar from '../components/NavBar'
 import StarRating from '../components/StarRating'
 import AddRatingButton from "../components/AddRatingButton"
 import {supabase} from '../data/supabase'
+import {getMean} from '../utils/processData'
 
 const ExampleDetail = () => {
   const {spot_name} = useParams()
   const [spot, setSpot] = useState(null);
-  const [comments, setComments] = useState([])
+  const [ratings, setRatings] = useState([])
   const [newComment, setNewComment] = useState('')
 
   useEffect(() => {
@@ -36,17 +37,20 @@ const ExampleDetail = () => {
   useEffect(() => {
     if(!spot) return;
 
-    const fetchComments = async () => {
+    const fetchRatings = async () => {
       const { data, error } = await supabase
         .from('user_ratings')
-        .select('comment, created_at')
+        .select('overall_rating, busy_rating, comment, created_at')
         .eq('spot_key', spot.spot_key);
 
       if (error) console.error('Error fetching comments:', error.message);
-      else setComments(data);
+      else {
+        console.log('fetchRatings result', data);
+        setRatings(data);
+      }
     }
 
-    fetchComments();
+    fetchRatings();
   }, [spot]);
 
   if (!spot) return (
@@ -78,11 +82,11 @@ const ExampleDetail = () => {
       <div style={{display:'flex',gap:24,marginTop:8}}>
         <div>
           <div style={{fontSize:13,color:'#666'}}>Overall rating</div>
-          <StarRating value={spot.overall_rating} />
+          <StarRating value={ratings.length > 0 ? getMean(ratings.map(rating => rating.overall_rating)) : 0} />
         </div>
         <div>
           <div style={{fontSize:13,color:'#666'}}>Busy rating</div>
-          <StarRating value={spot.busy_rating} />
+          <StarRating value={ratings.length > 0 ? getMean(ratings.map(rating => rating.busy_rating)) : 0} />
         </div>
       </div>
 
@@ -94,8 +98,8 @@ const ExampleDetail = () => {
         </form>
 
         <div style={{display:'flex',flexDirection:'column',gap:8}}>
-          {comments.length === 0 && <div style={{color:'#666'}}>No comments yet.</div>}
-          {comments.map((c, idx)=> (
+          {ratings.length === 0 && <div style={{color:'#666'}}>No comments yet.</div>}
+          {ratings.map((c, idx)=> (
             <div key={idx} style={{padding:10,border:'1px solid #eee',borderRadius:6}}>
               <div style={{fontSize:12,color:'#999'}}>{c.created_at}</div>
               <div style={{marginTop:6}}>{c.comment}</div>
