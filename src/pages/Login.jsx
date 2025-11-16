@@ -20,6 +20,11 @@ const Login = () => {
 
   const submit = async (e) => {
     e.preventDefault()
+    const {data: {user}} = await supabase.auth.getUser();
+    if(user == null) {
+      const { data, error} = await supabase
+    }
+
     const { data, error } = await supabase.auth.signInWithOtp({
       email: name + '@sdsu.edu',
       options: {
@@ -46,25 +51,28 @@ const Login = () => {
   }
 
   return (
-    <div style={{maxWidth:520,margin:'40px auto',padding:12}}>
-      <h1 style={{fontSize:32,fontWeight:700,marginBottom:24}}>Rate Your Study</h1>
-      <form onSubmit={submit} style={{display:'flex',flexDirection:'column',gap:12}}>
-        <div style={{display:'flex',alignItems:'center',gap:6}}>
-          <input
-            placeholder="Enter username"
-            value={name}
-            onChange={e=>setName(e.target.value)}
-            style={{padding:12,fontSize:18,border:'1px solid #ccc',borderRadius:6,fontFamily:'inherit',flex:1}}
-          />
-          <span style={{fontSize:18,color:'#666',fontWeight:500}}>@sdsu.edu</span>
-        </div>
-        <button type="submit" style={{padding:12,fontSize:18,fontWeight:600,backgroundColor:'#333',color:'#fff',border:'none',borderRadius:6,cursor:'pointer'}}>Continue</button>
-      </form>
-      <button
-        onClick={continueAsGuest}
-        style={{display:'inline-block',textAlign:'center',padding:12,fontSize:18,fontWeight:600,backgroundColor:'#eee',color:'#333',border:'none',borderRadius:6,cursor:'pointer',marginTop:8,textDecoration:'none'}}>
-        Continue as Guest
-      </button>
+    <div className="container" style={{maxWidth:520,marginTop:40}}>
+      <div className="card" style={{padding:20}}>
+        <h1 style={{fontSize:28,fontWeight:700,marginBottom:16}}>Rate Your Study</h1>
+
+        <form onSubmit={submit} style={{display:'flex',flexDirection:'column',gap:12}}>
+          <div style={{display:'flex',alignItems:'center',gap:8}}>
+            <input
+              placeholder="Enter username"
+              value={name}
+              onChange={e=>setName(e.target.value)}
+              className="input"
+              style={{flex:1}}
+            />
+            <span style={{fontSize:16,color:'var(--muted)',fontWeight:500}}>@sdsu.edu</span>
+          </div>
+
+          <div style={{display:'flex',gap:12,marginTop:8}}>
+            <button type="submit" className="btn btn-primary">Continue</button>
+            <button type="button" className="btn btn-ghost" onClick={continueAsGuest}>Continue as Guest</button>
+          </div>
+        </form>
+      </div>
     </div>
   )
 }
