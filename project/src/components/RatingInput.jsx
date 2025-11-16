@@ -1,11 +1,16 @@
 import {useRef} from "react"
+import { supabase } from "../data/supabase"
 
 const RatingInput = ({setInputVisible}) => {
     const overallRatingRef = useRef(null);
     const busyRatingRef = useRef(null);
     const commentRef = useRef(null);
 
-    const onSubmitButtonClick = () => {
+    const onSubmitButtonClick = async () => {
+        const {data, error} = await supabase
+            .from("UserRatings")
+            .select("user_key")
+            .eq("user_key", process.env.DEV_USER_KEY);
         setInputVisible(false);
     }
 
